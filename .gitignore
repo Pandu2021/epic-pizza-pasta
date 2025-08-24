@@ -1,7 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
+########################################
+# General & Node.js
+########################################
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -10,32 +10,127 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+########################################
+# Logs & Diagnostics
+########################################
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+########################################
+# Testing
+########################################
+coverage/
+*.lcov
 
-# vercel
-.vercel
+########################################
+# Next.js
+########################################
+.next/
+.next/cache/
+out/
+.vercel/
 
-# typescript
+########################################
+# Build artifacts
+########################################
+build/
+dist/
+
+########################################
+# TypeScript
+########################################
 *.tsbuildinfo
 next-env.d.ts
+
+########################################
+# Tool caches
+########################################
+.eslintcache
+.stylelintcache
+.cache/
+
+########################################
+# Environment files
+# Keep example envs, ignore real secrets
+########################################
+.env
+.env.*
+!.env.example
+!.env.*.example
+.envrc
+.envrc.local
+
+########################################
+# Editors & OS-specific
+########################################
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.history/
+.node_repl_history
+
+########################################
+# Misc
+########################################
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.pfx
+*.p12
+*.keystore
+*.jks
+*.tgz
+.npmrc
+tmp/
+temp/
+
+########################################
+# Test & Coverage (extras)
+########################################
+.nyc_output/
+coverage-final.json
+
+########################################
+# Build/Tool caches (extras)
+########################################
+.turbo/
+swc/
+.pnpm-store/
+
+########################################
+# E2E tools (optional)
+########################################
+cypress/screenshots/
+cypress/videos/
+playwright-report/
+.playwright/
+
+########################################
+# Databases & dumps
+########################################
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.bson
+*.sql
+dump/
+backups/
+
+########################################
+# Yarn Berry tweaks
+########################################
+!.yarn/sdks

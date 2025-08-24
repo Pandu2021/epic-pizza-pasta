@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a Next.js project for an online ordering website (Epic Pizza & Pasta).
 
-## Getting Started
+## Project progress (milestone status)
 
-First, run the development server:
+Summary based on repository inspection (files & endpoints):
 
-```bash
+- Milestone 1 — Foundational setup & UI/UX: DONE
+	- Evidence: Next.js app structure, Tailwind config, layout and pages in `src/app`.
+- Milestone 2 — Dynamic menu & checkout: DONE
+	- Evidence: `src/app/menu/page.tsx` (fetch `/api/menu-items`), `src/app/api/menu-items/route.ts`, `src/data/menuData.ts`, `src/context/CartContext.tsx`, `src/app/checkout/page.tsx`, `src/app/api/orders/route.ts`, `src/models/MenuItem.ts`, `src/models/Order.ts`.
+- Milestone 3 — Payment gateway & delivery distance: NOT IMPLEMENTED
+	- No payment provider integration (Omise/Stripe/PromptPay) or Google Maps distance calculation found.
+- Milestone 4 — Order automation (email / Google Sheets / kitchen printing): PARTIAL
+	- Orders are saved to MongoDB. No Gmail/Sheets/Xprinter automation found in code.
+- Milestone 5 — Live deployment & handover: NOT YET
+	- App is ready for deploy for core features, but payment & automations should be added before full production launch.
+
+Estimated progress: ~60% (Milestones 1+2 complete, order storage implemented, automations and payments pending).
+
+## Quick developer setup
+
+1. Install and run locally:
+
+```powershell
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Required environment variables (create `.env.local`):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+MONGODB_URI=mongodb+srv://<user>:<pass>@cluster0.xxxxx.mongodb.net/<db>?retryWrites=true&w=majority
+JWT_SECRET=changeme
+# Optional
+FORCE_PUBLIC_DNS=true
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Seeding (optional):
 
-## Learn More
+```powershell
+npm run seed
+# or to destroy seed data
+npm run seed:destroy
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Recommended deployment options
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Short recommendation:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Vercel — Best if you want the smoothest experience for Next.js (built-in optimizations, image / edge features). Use with MongoDB Atlas.
+- Render — Good choice if you want more control over Node process, background workers, and a predictable price model. Works well for this app.
+- If you need to integrate local printers (Xprinter) directly, consider hybrid: cloud app + local print-bridge (Raspberry Pi) or use PrintNode/relay service.
 
-## Deploy on Vercel
+Notes for Render/Vercel deployment:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Ensure `MONGODB_URI` and `JWT_SECRET` are set in the platform's environment variables.
+- Build command: `npm ci && npm run build` (or `npm run build`) and Start command: `npm run start` for serverful deployment.
+- Set Node version explicitly (add `"engines": { "node": ">=18" }` to `package.json` if needed).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Next recommended engineering steps (high priority)
+
+1. Integrate a payment gateway and server-side webhook for payment confirmation (Stripe, Omise, or a PromptPay QR flow).
+2. Add delivery fee calculation: implement Google Maps Distance Matrix or server-side geocoding + haversine fallback.
+3. Implement order automation: email notifications (nodemailer/Gmail API), Google Sheets logging (Sheets API), and a print-bridge for Xprinter.
+4. Add basic tests and smoke checks for `/api/menu-items` and `/api/orders`.
+
+## Minimal env-vars checklist for production
+
+- MONGODB_URI
+- JWT_SECRET
+- PAYMENT_API_KEY (if payment added)
+- GOOGLE_MAPS_API_KEY (if distance calc added)
+
+## How I verified
+
+- Inspected `src/app/menu`, `src/app/checkout`, `src/app/api/*` routes, `src/models/*`, and `src/context/*` to confirm implemented features.
+
+---
+
+If you want, I can now:
+
+- Add a short `DEPLOY.md` with step-by-step Render and Vercel instructions.
+- Create skeleton code for payment webhook + Google Maps distance calculator.
+- Add README section showing exact env var names and example Render service config.
+
+Tell me which of the three actions above you want next and I will implement it.
